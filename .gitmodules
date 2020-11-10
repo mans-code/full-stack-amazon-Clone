@@ -1,0 +1,9 @@
+[submodule "b2c"]
+	path = b2c
+	url = https://github.com/mans-code/b2c.git
+[submodule "customer-backend-amozan-clone"]
+	path = customer-backend-amozan-clone
+	url = https://github.com/mans-code/customer-backend-amozan-clone.git
+[submodule "customer-frontend-amozan-clone"]
+	path = customer-frontend-amozan-clone
+	url = https://github.com/mans-code/customer-frontend-amozan-clone.git
