@@ -1,0 +1,65 @@
+version: "3.6"
+
+services:
+  # front end
+  client:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - "./frontend:/amazonclone/frontend"
+      - "/amazonclone/frontend/node_modules"
+    stdin_open: true # keeps the server running
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    networks:
+      - amazon-clone-network
+
+  # backend API
+  api:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8000:8000" #debuging port
+    depends_on:
+      - database
+    restart: unless-stopped
+    environment:
+      DB_HOST: database
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: test_db
+      DB_PORT: 27017
+    volumes:
+      - "./backend:/amazonclone/backend"
+    networks:
+      - amazon-clone-network
+
+  # Mongo DB
+  database:
+    container_name: db
+    image: mongo:4.2
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: test_db
+    networks:
+      - amazon-clone-network
+#   #Elastic Search
+
+#   # backend DB Mongo
+#   database:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  amazon-clone-network:
